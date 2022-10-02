@@ -1,8 +1,8 @@
 defmodule Speller do
-  @behaviour Problem
+  use Problem
   alias Types.Chromosome
 
-  @target "findme"
+  @target "reallylong"
   @target_length String.length(@target)
 
   @impl Problem
@@ -21,8 +21,14 @@ defmodule Speller do
   end
 
   @impl Problem
+  def select(population, n) do
+    Toolbox.Selection.tournament(population, n, 3)
+  end
+
+  @impl Problem
   def terminate?([best | _], _generation) do
-    best.fitness == 1
+    #generation > 99
+    best.fitness > 0.8
   end
 end
 

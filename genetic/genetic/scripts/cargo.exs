@@ -1,5 +1,5 @@
 defmodule Cargo do
-  @behaviour Problem
+  use Problem
   alias Types.Chromosome
 
   @cargo_types [

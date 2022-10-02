@@ -1,5 +1,5 @@
 defmodule Portfolio do
-  @behaviour Problem
+  use Problem
   alias Types.Chromosome
 
   @size 10
