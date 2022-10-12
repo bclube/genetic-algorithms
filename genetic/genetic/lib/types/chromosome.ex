@@ -1,10 +1,10 @@
 defmodule Types.Chromosome do
   @type t :: %__MODULE__{
-    genes: Enum.t,
-    size: integer(),
-    fitness: number(),
-    age: integer()
-  }
+          genes: Enum.t(),
+          size: integer(),
+          fitness: number(),
+          age: integer()
+        }
 
   @enforce_keys :genes
   defstruct [

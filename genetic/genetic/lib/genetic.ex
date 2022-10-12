@@ -12,10 +12,12 @@ defmodule Genetic do
     population = evaluate(population, &problem.fitness_function/1)
     best = hd(population)
     IO.write("\rCurrent Best: #{generation} #{best.fitness}     ")
+
     if problem.terminate?(population, generation) do
       best
     else
       {parents, leftover} = select(problem, population, opts)
+
       parents
       |> crossover(problem)
       |> Stream.concat(leftover)
@@ -32,6 +34,7 @@ defmodule Genetic do
 
   def backfill(population, problem, opts \\ []) do
     population_size = Keyword.get(opts, :population_size, 100)
+
     population
     |> Stream.concat(Stream.repeatedly(&problem.genotype/0))
     |> Stream.take(population_size)
@@ -39,13 +42,11 @@ defmodule Genetic do
 
   def evaluate(population, fitness_function) do
     population
-    |> Stream.map(
-      fn chromosome ->
-        fitness = fitness_function.(chromosome)
-        age = chromosome.age + 1
-        %Chromosome{chromosome | fitness: fitness, age: age}
-      end
-    )
+    |> Stream.map(fn chromosome ->
+      fitness = fitness_function.(chromosome)
+      age = chromosome.age + 1
+      %Chromosome{chromosome | fitness: fitness, age: age}
+    end)
     |> Enum.sort_by(& &1.fitness, &>=/2)
   end
 
@@ -57,6 +58,7 @@ defmodule Genetic do
 
     parents = problem.select(population, n)
     parent_map = MapSet.new(parents)
+
     leftover =
       population
       |> Stream.filter(fn p -> not MapSet.member?(parent_map, p) end)

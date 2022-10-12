@@ -5,14 +5,16 @@ defmodule Toolbox.Crossover do
     cx_point = :rand.uniform(p1.size)
     {h1, t1} = Enum.split(p1.genes, cx_point)
     {h2, t2} = Enum.split(p2.genes, cx_point)
+
     [
       %Chromosome{p1 | genes: Enum.concat(h1, t2)},
-      %Chromosome{p2 | genes: Enum.concat(h2, t1)},
+      %Chromosome{p2 | genes: Enum.concat(h2, t1)}
     ]
   end
 
   def order_one_crossover(p1, p2) do
     lim = p1.size
+
     [i1, i2] =
       [:rand.uniform(lim), :rand.uniform(lim)]
       |> Enum.sort()
@@ -46,7 +48,7 @@ defmodule Toolbox.Crossover do
 
     [
       %Chromosome{p1 | genes: c1},
-      %Chromosome{p2 | genes: c2},
+      %Chromosome{p2 | genes: c2}
     ]
   end
 
@@ -56,6 +58,7 @@ defmodule Toolbox.Crossover do
       |> Stream.zip(p2.genes)
       |> Stream.map(fn {x, y} ->
         one_minus_alpha = 1 - alpha
+
         {
           x * alpha + y * one_minus_alpha,
           y * alpha + x * one_minus_alpha

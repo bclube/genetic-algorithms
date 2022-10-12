@@ -1,11 +1,11 @@
 defmodule Problem do
   alias Types.Chromosome
 
-  @callback genotype :: Chromosome.t
-  @callback fitness_function(Chromosome.t) :: number()
-  @callback select(Enum.t, integer()) :: Enum.t
-  @callback crossover(Chromosome.t, Chromosome.t) :: Enum.t
-  @callback terminate?(Enum.t, integer()) :: boolean()
+  @callback genotype :: Chromosome.t()
+  @callback fitness_function(Chromosome.t()) :: number()
+  @callback select(Enum.t(), integer()) :: Enum.t()
+  @callback crossover(Chromosome.t(), Chromosome.t()) :: Enum.t()
+  @callback terminate?(Enum.t(), integer()) :: boolean()
 
   defmacro __using__(_opts) do
     quote do
