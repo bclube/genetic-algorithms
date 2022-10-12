@@ -1,6 +1,5 @@
 defmodule Speller do
   use Problem
-  alias Types.Chromosome
 
   @target "reallylong"
   @target_length String.length(@target)

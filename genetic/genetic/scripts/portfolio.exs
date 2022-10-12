@@ -1,6 +1,5 @@
 defmodule Portfolio do
   use Problem
-  alias Types.Chromosome
 
   @size 10
   @target_fitness 180

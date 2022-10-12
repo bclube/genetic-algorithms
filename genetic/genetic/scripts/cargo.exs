@@ -1,6 +1,5 @@
 defmodule Cargo do
   use Problem
-  alias Types.Chromosome
 
   @cargo_types [
     {1, 11},

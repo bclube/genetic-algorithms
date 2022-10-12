@@ -1,6 +1,5 @@
 defmodule OneMax do
   use Problem
-  alias Types.Chromosome
 
   @chromosome_length 500
   @max_fitness @chromosome_length

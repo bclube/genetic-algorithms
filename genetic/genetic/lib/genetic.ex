@@ -13,14 +13,13 @@ defmodule Genetic do
     best = hd(population)
     IO.write("\rCurrent Best: #{generation} #{best.fitness}     ")
     if problem.terminate?(population, generation) do
-      IO.inspect(population)
       best
     else
       {parents, leftover} = select(problem, population, opts)
       parents
-      |> crossover(opts)
+      |> crossover(problem)
       |> Stream.concat(leftover)
-      |> mutation(opts)
+      |> mutation()
       |> backfill(problem, opts)
       |> evolve(problem, generation + 1, opts)
     end
@@ -67,22 +66,14 @@ defmodule Genetic do
     {parents, leftover}
   end
 
-  def crossover(population, opts \\ []) do
+  def crossover(population, problem) do
     Stream.flat_map(
       population,
-      fn [p1, p2] ->
-        cx_point = :rand.uniform(p1.size)
-        {h1, t1} = Enum.split(p1.genes, cx_point)
-        {h2, t2} = Enum.split(p2.genes, cx_point)
-        [
-          %Chromosome{p1 | genes: Enum.concat(h1, t2)},
-          %Chromosome{p2 | genes: Enum.concat(h2, t1)},
-        ]
-      end
+      fn [p1, p2] -> problem.crossover(p1, p2) end
     )
   end
 
-  def mutation(population, opts \\ []) do
+  def mutation(population) do
     Stream.map(
       population,
       fn chromosome ->
