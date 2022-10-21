@@ -21,7 +21,7 @@ defmodule Genetic do
       parents
       |> crossover(problem)
       |> Stream.concat(leftover)
-      |> mutation()
+      |> mutation(problem, opts)
       |> backfill(problem, opts)
       |> evolve(problem, generation + 1, opts)
     end
@@ -75,12 +75,14 @@ defmodule Genetic do
     )
   end
 
-  def mutation(population) do
+  def mutation(population, problem, opts) do
+    rate = Keyword.get(opts, :mutation_rate, 0.05)
+
     Stream.map(
       population,
       fn chromosome ->
-        if :rand.uniform() < 0.05 do
-          %Chromosome{chromosome | genes: Enum.shuffle(chromosome.genes)}
+        if :rand.uniform() < rate do
+          problem.mutate(chromosome)
         else
           chromosome
         end

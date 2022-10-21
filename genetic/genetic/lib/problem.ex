@@ -23,6 +23,12 @@ defmodule Problem do
       end
 
       defoverridable crossover: 2
+
+      def mutate(chromosome) do
+        Toolbox.Mutation.shuffle(chromosome)
+      end
+
+      defoverridable mutate: 1
     end
   end
 end
