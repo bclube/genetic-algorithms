@@ -4,7 +4,8 @@ defmodule Codebreaker do
 
   def genotype do
     %Chromosome{
-      genes: Stream.repeatedly(fn -> Enum.random(0..1) end)
+      genes:
+        Stream.repeatedly(fn -> Enum.random(0..1) end)
         |> Enum.take(64),
       size: 64
     }
@@ -13,9 +14,11 @@ defmodule Codebreaker do
   def fitness_function(chromosome) do
     target = "ILoveGeneticAlgorithms"
     encrypted = 'LIjs`B`k`qlfDibjwlqmhv'
+
     cipher = fn key ->
-      Enum.map(encrypted, &(rem(Bitwise.bxor(&1, key), 32768)))
+      Enum.map(encrypted, &rem(Bitwise.bxor(&1, key), 32768))
     end
+
     key =
       chromosome.genes
       |> Stream.map(&Integer.to_string/1)
@@ -43,8 +46,8 @@ solution = Genetic.run(Codebreaker)
   |> Enum.join()
   |> Integer.parse(2)
 
-IO.write [
+IO.write([
   "\nThe Key is ",
   Integer.to_string(key),
   "\n"
-]
+])

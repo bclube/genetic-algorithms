@@ -11,13 +11,13 @@ defmodule Cargo do
     {6, 8},
     {7, 9},
     {8, 8},
-    {9, 7},
+    {9, 7}
   ]
 
   @impl Problem
   def genotype do
     %Chromosome{
-      genes: (for _ <- 1..10, do: Enum.random(0..1)),
+      genes: for(_ <- 1..10, do: Enum.random(0..1)),
       size: 10
     }
   end
@@ -30,7 +30,7 @@ defmodule Cargo do
       chromosome.genes
       |> Stream.zip(@cargo_types)
       |> Stream.flat_map(fn {g, cargo} -> if g == 1, do: [cargo], else: [] end)
-      |> Enum.reduce({0, 0}, fn {profit, weight}, {tp, tw}  -> {tp + profit, tw + weight} end)
+      |> Enum.reduce({0, 0}, fn {profit, weight}, {tp, tw} -> {tp + profit, tw + weight} end)
 
     if total_weight <= weight_limit do
       total_profit

@@ -21,7 +21,6 @@ defmodule OneMax do
   def terminate?([best | _], _generation) do
     best.fitness == @max_fitness
   end
-
 end
 
 solution = Genetic.run(OneMax)

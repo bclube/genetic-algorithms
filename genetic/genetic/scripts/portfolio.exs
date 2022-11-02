@@ -30,7 +30,6 @@ defmodule Portfolio do
   def terminate?([best | _], _generation) do
     best.fitness > @target_fitness
   end
-
 end
 
 solution = Genetic.run(Portfolio)

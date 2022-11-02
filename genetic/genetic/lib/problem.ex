@@ -19,7 +19,7 @@ defmodule Problem do
       defoverridable select: 2
 
       def crossover(p1, p2) do
-        Toolbox.Crossover.basic_crossover(p1, p2)
+        Toolbox.Crossover.single_point(p1, p2)
       end
 
       defoverridable crossover: 2

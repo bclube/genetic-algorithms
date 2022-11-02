@@ -26,7 +26,7 @@ defmodule Speller do
 
   @impl Problem
   def terminate?([best | _], _generation) do
-    #generation > 99
+    # generation > 99
     best.fitness > 0.8
   end
 end
