@@ -5,6 +5,7 @@ defmodule Problem do
   @callback fitness_function(Chromosome.t()) :: number()
   @callback select(Enum.t(), integer()) :: Enum.t()
   @callback crossover(Chromosome.t(), Chromosome.t()) :: Enum.t()
+  @callback strategy([Chromosome.t()], [Chromosome.t()], [Chromosome.t()]) :: [Chromosome.t()]
   @callback terminate?(Enum.t(), integer()) :: boolean()
 
   defmacro __using__(_opts) do
@@ -23,6 +24,12 @@ defmodule Problem do
       end
 
       defoverridable crossover: 2
+
+      def strategy(parents, offspring, leftover) do
+        Toolbox.Reinsertion.pure(parents, offspring, leftover)
+      end
+
+      defoverridable strategy: 3
 
       def mutate(chromosome) do
         Toolbox.Mutation.shuffle(chromosome)

@@ -11,17 +11,20 @@ defmodule Genetic do
   def evolve(population, problem, generation, opts \\ []) do
     population = evaluate(population, &problem.fitness_function/1)
     best = hd(population)
-    IO.write("\rCurrent Best: #{generation} #{best.fitness}     ")
+    best_fitness = :erlang.float_to_binary(best.fitness, decimals: 4)
+    IO.write("\rCurrent Best: population: #{length(population)} #{best_fitness}\t#{generation}")
 
     if problem.terminate?(population, generation) do
       best
     else
       {parents, leftover} = select(problem, population, opts)
+      children = crossover(parents, problem)
+      mutants = mutation(population, problem, opts)
+      parents = Stream.flat_map(parents, & &1)
 
-      parents
-      |> crossover(problem)
-      |> Stream.concat(leftover)
-      |> mutation(problem, opts)
+      children
+      |> Stream.concat(mutants)
+      |> reinsertion(parents, leftover, problem)
       |> backfill(problem, opts)
       |> evolve(problem, generation + 1, opts)
     end
@@ -75,16 +78,20 @@ defmodule Genetic do
     )
   end
 
+  defp reinsertion(offspring, parents, leftover, problem) do
+    problem.strategy(parents, offspring, leftover)
+  end
+
   def mutation(population, problem, opts) do
     rate = Keyword.get(opts, :mutation_rate, 0.05)
 
-    Stream.map(
+    Stream.flat_map(
       population,
       fn chromosome ->
         if :rand.uniform() < rate do
-          problem.mutate(chromosome)
+          [problem.mutate(chromosome)]
         else
-          chromosome
+          []
         end
       end
     )

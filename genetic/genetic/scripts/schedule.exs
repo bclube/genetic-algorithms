@@ -37,9 +37,16 @@ defmodule Schedule do
   def terminate?(_population, generation) do
     generation >= 1_000
   end
+
+  @impl Problem
+  def strategy(parents, offspring, leftover) do
+    Toolbox.Reinsertion.elitist(parents, offspring, leftover, 0.15)
+    |> Enum.sort_by(& &1.fitness, &>=/2)
+    |> Stream.take(100)
+  end
 end
 
 solution = Genetic.run(Schedule)
 
 IO.write("\n")
-IO.inspect(solution.genes)
+IO.inspect(solution)
