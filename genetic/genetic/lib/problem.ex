@@ -2,6 +2,7 @@ defmodule Problem do
   alias Types.Chromosome
 
   @callback genotype :: Chromosome.t()
+  @callback statistics([Chromosome.t()], integer()) :: :ok
   @callback fitness_function(Chromosome.t()) :: number()
   @callback select(Enum.t(), integer()) :: Enum.t()
   @callback crossover(Chromosome.t(), Chromosome.t()) :: Enum.t()
@@ -12,6 +13,10 @@ defmodule Problem do
     quote do
       @behaviour Problem
       alias Types.Chromosome
+
+      def statistics(_population, _generation), do: :ok
+
+      defoverridable statistics: 2
 
       def select(population, n) do
         Toolbox.Selection.elite(population, n)

@@ -13,6 +13,7 @@ defmodule Genetic do
     best = hd(population)
     best_fitness = :erlang.float_to_binary(best.fitness, decimals: 4)
     IO.write("\rCurrent Best: population: #{length(population)} #{best_fitness}\t#{generation}")
+    problem.statistics(population, generation)
 
     if problem.terminate?(population, generation) do
       best
